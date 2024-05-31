@@ -1,24 +1,26 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 前提
+Docker Desktopがインストール済みであること
 
-Things you may want to cover:
+## 環境構築
+```
+# Dockerのビルド〜seed投入まで
+  make init
+```
 
-* Ruby version
+## 開発
+Makefileにコマンドが記載されている
+```
+# Run server
+  make start
+   
+# Run server(detached)
+  make start-d
+  
+# Stop server
+  make stop
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+# Down server
+  make down
+```
