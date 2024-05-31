@@ -20,7 +20,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    p "destroy"
+    session[:user_id] = nil
+    render :new
   end
 
   private
