@@ -1,0 +1,14 @@
+<h1>写真アップロード</h1>
+<%= form_with(url: photos_path, local: true) do |form| %>
+  <div>
+    <%= form.label :タイトル %>
+    <%= form.text_field :title %>
+  </div>
+  <div>
+    <%= form.label :画像ファイル %>
+    <%= form.file_field :image, accept: 'image/jpeg,image/png' %>
+  </div>
+  <div>
+    <%= form.submit "アップロード" %>
+  </div>
+<% end %>
