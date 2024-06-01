@@ -3,6 +3,7 @@ class PhotosController < ApplicationController
   UPLOAD_OBJ = "photos"
 
   def index
+    @photos = @current_user.photos
   end
 
   def new
