@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_many :photos, dependent: :destroy
   has_secure_password
 
   # NOTE: usernameとpasswordをログイン時に使用する
