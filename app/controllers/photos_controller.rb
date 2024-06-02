@@ -82,6 +82,8 @@ class PhotosController < ApplicationController
       error_messages = []
       if params[:title].blank?
         error_messages << "・タイトルを入力してください"
+      elsif params[:title].length > 30
+        error_messages << "・タイトルは30文字以内にしてください"
       end
 
       if params[:image].blank?
