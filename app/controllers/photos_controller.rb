@@ -34,7 +34,7 @@ class PhotosController < ApplicationController
     photo = @current_user.photos.create(title: params[:title], image: image_url)
 
     if photo
-      redirect_to photos_path
+      redirect_to photos_path, notice: "・登録に成功しました"
     else
       flash[:alert] = "・登録できませんでした"
       render :new, status: :unprocessable_entity
@@ -67,12 +67,12 @@ class PhotosController < ApplicationController
       end
 
       if response.code.to_i == 201
-        redirect_to photos_path, notice: "ツイートが投稿されました。"
+        redirect_to photos_path, notice: "ツイートが投稿されました"
       else
-        redirect_to photos_path, alert: "ツイートの投稿に失敗しました。"
+        redirect_to photos_path, alert: "ツイートの投稿に失敗しました"
       end
     else
-      redirect_to photos_path, alert: "アクセストークンがありません。"
+      redirect_to photos_path, alert: "アクセストークンがありません"
     end
   end
 
