@@ -10,6 +10,9 @@
       <div class="photo-container">
         <h2><%= photo.title %></h2>
         <%= image_tag photo.image, size: "300x300" %>
+        <% if session[:access_token] %>
+          <%= button_to "ツイートする", tweet_photo_path(photo), method: :post %>
+        <% end %>
       </div>
     </div>
   <% end %>

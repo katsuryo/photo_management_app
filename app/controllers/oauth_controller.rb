@@ -1,6 +1,8 @@
 require 'net/http'
 
 class OauthController < ApplicationController
+  before_action :authenticate_user
+  
   def callback
     code = params[:code]
     client_id = Rails.application.credentials.client_id
