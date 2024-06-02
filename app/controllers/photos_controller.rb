@@ -1,3 +1,5 @@
+require 'net/http'
+
 class PhotosController < ApplicationController
   before_action :authenticate_user
   UPLOAD_OBJ = "photos"
@@ -40,6 +42,38 @@ class PhotosController < ApplicationController
   rescue => e
     flash[:alert] = "・システムエラーが発生しました"
     render :new, status: :unprocessable_entity
+  end
+
+  def tweet
+    photo = Photo.find(params[:id])
+    access_token = session[:access_token]
+    
+    if access_token
+      uri = URI.parse(TWEET_ENDPOINT)
+      request = Net::HTTP::Post.new(uri)
+      request.content_type = "application/json"
+      request["Authorization"] = "Bearer #{access_token}"
+      request.body = {
+        text: photo.title,
+        url: photo.image
+      }.to_json
+
+      req_options = {
+        use_ssl: uri.scheme == "https",
+      }
+
+      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+        http.request(request)
+      end
+
+      if response.code.to_i == 201
+        redirect_to photos_path, notice: "ツイートが投稿されました。"
+      else
+        redirect_to photos_path, alert: "ツイートの投稿に失敗しました。"
+      end
+    else
+      redirect_to photos_path, alert: "アクセストークンがありません。"
+    end
   end
 
   private

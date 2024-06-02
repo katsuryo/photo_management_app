@@ -1,5 +1,8 @@
 <h1>写真一覧</h1>
-<%= link_to "新しい写真を追加", new_photo_path %>
+<div>
+  <%= link_to "新しい写真を追加", new_photo_path %><br>
+  <%= link_to "My Tweet Appと連携", OAUTH_AUTHORIZE_URL %>
+</div>
 
 <div class="photo-grid">
   <% @photos.each do |photo| %>
@@ -7,6 +10,9 @@
       <div class="photo-container">
         <h2><%= photo.title %></h2>
         <%= image_tag photo.image, size: "300x300" %>
+        <% if session[:access_token] %>
+          <%= button_to "ツイートする", tweet_photo_path(photo), method: :post %>
+        <% end %>
       </div>
     </div>
   <% end %>
