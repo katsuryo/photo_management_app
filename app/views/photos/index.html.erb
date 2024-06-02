@@ -1,0 +1,14 @@
+<h1>写真一覧</h1>
+<%= link_to "新しい写真を追加", new_photo_path %>
+
+<div class="photo-grid">
+  <% @photos.each do |photo| %>
+    <div class="photo-item">
+      <div class="photo-container">
+        <h2><%= photo.title %></h2>
+        <%= image_tag photo.image, size: "300x300" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+

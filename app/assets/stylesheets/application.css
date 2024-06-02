@@ -1,3 +1,4 @@
+/* common */
 .flash {
     padding: 10px;
     margin-bottom: 10px;
@@ -7,3 +8,14 @@
 .flash.alert {
     color: indianred;
 }
+
+/* photos */
+.photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .photo-item {
+    width: 30%;
+    margin-bottom: 20px;
+  }
