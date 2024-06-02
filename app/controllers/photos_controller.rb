@@ -21,7 +21,7 @@ class PhotosController < ApplicationController
     extension = File.extname(params[:image].original_filename)
 
     # 拡張子がjpgまたはpngであることを確認
-    unless %w[.jpg .jpeg .png].include?(extension.downcase)
+    unless valid_extension?(extension)
       flash[:alert] = "・jpgかpngのファイルを使用してください"
       render :new, status: :unprocessable_entity
       return
@@ -34,7 +34,7 @@ class PhotosController < ApplicationController
     photo = @current_user.photos.create(title: params[:title], image: image_url)
 
     if photo
-      redirect_to photos_path
+      redirect_to photos_path, notice: "・登録に成功しました"
     else
       flash[:alert] = "・登録できませんでした"
       render :new, status: :unprocessable_entity
@@ -49,6 +49,44 @@ class PhotosController < ApplicationController
     access_token = session[:access_token]
     
     if access_token
+      response = post_tweet(photo, access_token)
+
+      if response.code.to_i == 201
+        redirect_to photos_path, notice: "ツイートが投稿されました"
+      else
+        redirect_to photos_path, alert: "ツイートの投稿に失敗しました"
+      end
+    else
+      redirect_to photos_path, alert: "アクセストークンがありません"
+    end
+  end
+
+  private
+
+    def params_missing?
+      error_messages = []
+      if params[:title].blank?
+        error_messages << "・タイトルを入力してください"
+      elsif params[:title].length > 30
+        error_messages << "・タイトルは30文字以内にしてください"
+      end
+
+      if params[:image].blank?
+        error_messages << "・画像ファイルを選択してください"
+      end
+
+      unless error_messages.empty?
+        flash[:alert] = error_messages.join("<br>")
+        return true
+      end
+      false
+    end
+
+    def valid_extension?(extension)
+      %w[.jpg .jpeg .png].include?(extension)
+    end
+
+    def post_tweet(photo, access_token)
       uri = URI.parse(TWEET_ENDPOINT)
       request = Net::HTTP::Post.new(uri)
       request.content_type = "application/json"
@@ -65,33 +103,5 @@ class PhotosController < ApplicationController
       response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
         http.request(request)
       end
-
-      if response.code.to_i == 201
-        redirect_to photos_path, notice: "ツイートが投稿されました。"
-      else
-        redirect_to photos_path, alert: "ツイートの投稿に失敗しました。"
-      end
-    else
-      redirect_to photos_path, alert: "アクセストークンがありません。"
-    end
-  end
-
-  private
-
-    def params_missing?
-      error_messages = []
-      if params[:title].blank?
-        error_messages << "・タイトルを入力してください"
-      end
-
-      if params[:image].blank?
-        error_messages << "・画像ファイルを選択してください"
-      end
-
-      unless error_messages.empty?
-        flash[:alert] = error_messages.join("<br>")
-        return true
-      end
-      false
     end
 end
