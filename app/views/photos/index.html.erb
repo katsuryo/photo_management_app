@@ -1,5 +1,8 @@
 <h1>写真一覧</h1>
-<%= link_to "新しい写真を追加", new_photo_path %>
+<div>
+  <%= link_to "新しい写真を追加", new_photo_path %><br>
+  <%= link_to "My Tweet Appと連携", OAUTH_AUTHORIZE_URL %>
+</div>
 
 <div class="photo-grid">
   <% @photos.each do |photo| %>
