@@ -5,4 +5,6 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   resources :photos, only: %i[index new create]
+  # OAuthコールバック
+  get 'oauth/callback', to: 'oauth#callback'
 end
