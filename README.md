@@ -1,24 +1,44 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## 前提
+Docker Desktopがインストール済みであること
 
-Things you may want to cover:
+## 環境構築
+```
+# Dockerを使用しており、web, dbのコンテナを立ち上げる。dbはmysqlを使用。
+# Dockerのビルド〜seed投入まで
+  make init
+```
 
-* Ruby version
+## 開発
+Makefileにコマンドが記載されている
+```
+# Run server
+  make start
+   
+# Run server(detached)
+  make start-d
+  
+# Stop server
+  make stop
 
-* System dependencies
+# Down server
+  make down
+```
 
-* Configuration
+## 動作方法
+必要なもの: config/credentials/development.key
+↑ client_id等の機密情報については、config/credentials/development.yml.encで定義しているためローカルで動作させるためにkeyが必要。
 
-* Database creation
+make init により、build ~ seedデータの作成まで済ませる。
+作成されるユーザ
+①ユーザ名: test1, password: password1
+②ユーザ名: test2, password: password2
 
-* Database initialization
 
-* How to run the test suite
+make startで、サーバーを立ち上げ、上記ユーザでログイン可能。
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 保留にしたこと
+- UIの調整
+- Lint等の調整
+- テスト
