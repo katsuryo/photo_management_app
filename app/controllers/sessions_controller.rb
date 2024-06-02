@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
   def new
-  #  loginのview
+    user = User.find_by(id: session[:user_id])
+    redirect_to photos_path if user
   end
 
   def create
