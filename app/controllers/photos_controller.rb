@@ -5,7 +5,7 @@ class PhotosController < ApplicationController
   UPLOAD_OBJ = "photos"
 
   def index
-    @photos = @current_user.photos
+    @photos = @current_user.photos.order(created_at: :desc)
   end
 
   def new
